@@ -1,0 +1,34 @@
+1. Installing Git to Ubunut
+	sudo apt-get install git
+2. Configuring GitHub
+	git config --global user.name "your user name"
+	git config --global user.email "your@emailid"
+3. Creating a local repository
+	a. Crate a dircotry mkdir /home/username/Learning
+	b. Go to direcotry cd /home/username/Lerning
+	c. type git init
+4. Crate README file 
+	echo "# Learning" >> README.md
+5. Aadd file locally 
+	git add README.md
+6. commit locally 
+	git commit -m "first commit"
+7. Creating a repository on GitHub
+	a. Create repository as yourseranme/Learning
+	b. connect to remote repoisotry git remote add origin https://github.com/nathtj/Learning.git
+8. Pushing files from local repository to github
+	a. type git push -u origin master
+	b. type your username 
+	c. type your password
+9. Get project from GitHub to local repository
+	a. Navigate to your reposiotrys Code tab in GitHub
+	b. Click Clone or download
+	c. Copy the URL provided
+	d. Open your command line and type cd ~/
+	e. type git clone https://github.com/nathtj/Learning.git
+10. Remove file from Repository
+	a. git rm yourfile
+	b. git commit -m "remvoe your file"
+	c. git push origin branch_name
+11. To see status
+	git status
