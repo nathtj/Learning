@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: resttest2
+spec:
+  ports:
+    - name: http
+      port: 8000
+      protocol: TCP
+      targetPort: 8000
+
+  selector:
+    deploymentconfig: resttest2
+    app: resttest2
+---
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: resttest2
+  namespace: helloworld
+spec:
+  replicas: 1
+  
+  selector:
+    app: resttest2
+    deploymentconfig: resttest2
+  template:
+    metadata:
+      labels:
+        app: resttest2
+        deploymentconfig: resttest2
+        version: v1
+    spec:
+      containers:
+        - image: resttest:latest
+          imagePullPolicy: Always
+          name: resttest2
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - resttest2
+        from:
+          kind: ImageStreamTag
+          name: resttest:latest
+          namespace: helloworld
+        lastTriggeredImage: >-
+          docker-registry.default.svc:5000/helloworld/resttest@sha256:3f5e4d39b80bdb656ca1a5718c03d7d8dac46a8acc9c354b10fd01f1ec356c23
+      type: ImageChange
+---

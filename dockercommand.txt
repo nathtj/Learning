@@ -1,0 +1,75 @@
+my host name:
+tarapocbox.btmna.com
+start the OC:
+oc cluster up --public-hostname=10.85.44.53 --host-data-dir=/home/ubuntu/ocdata
+
+Add admin role to user:
+oc policy add-role-to-user admin ubuntu -n defaul
+
+oc login https://pnjkblpoc001.btmna.com:8443 -u=ub67243 -p=ub67243_2018 -n=starproject --insecure-skip-tls-verify
+
+echo `oc whoami -t` | docker login -u `oc whoami` docker-registry-default.apps.btmna.com --password-stdin
+
+echo `oc whoami -t` | docker login -u `oc whoami` 172.30.1.1:5000 --password-stdin
+
+docker tag f3ccee72a6ac pnjkblpoc001.btmna.com:8443/starproject/restapitest
+
+
+root@Ubuntu-VirtualBox:/etc/docker# ls 
+daemon.json  key.json
+root@Ubuntu-VirtualBox:/etc/docker# cat daemon.json 
+{
+	"insecure-registries" : ["pnjkblpoc001.btmna.com:8443","172.30.0.0/16"]
+}
+
+
+buntu@Ubuntu-VirtualBox:~$ oc status
+In project default on server https://127.0.0.1:8443
+
+svc/docker-registry - 172.30.1.1:5000
+  dc/docker-registry deploys docker.io/openshift/origin-docker-registry:v3.7.2 
+    deployment #1 deployed 18 minutes ago - 1 pod
+
+svc/kubernetes - 172.30.0.1 ports 443->8443, 53->8053, 53->8053
+
+svc/router - 172.30.26.207 ports 80, 443, 1936
+  dc/router deploys docker.io/openshift/origin-haproxy-router:v3.7.2 
+    deployment #1 deployed 18 minutes ago - 1 pod
+
+View details with 'oc describe <resource>/<name>' or list everything with 'oc get all'.
+
+oc cluster up --public-hostname=tarapocbox.btmna.com --host-data-dir=~/ocdata
+
+oc cluster up --env HTTP_PROXY=$HTTP_PROXY --env HTTPS_PROXY=$HTTPS_PROXY --env NO_PROXY=$no_proxy
+
+oc policy add-role-to-user builder system:serviceaccount:default:developer
+
+curl --noprox "*" "http://mywebserver-mywebserver.127.0.0.1.nip.io"
+
+
+
+oc process \
+        -f http://bit.ly/openshift-gogs-persistent-template \
+        --param=HOSTNAME=your-gogs-hostname \
+        --param=GOGS_VERSION=0.11.4 \
+        | oc create -f -
+
+
+Username: ubuntu Password: ubuntu Database Name: mysql Connection URL: mysql://mysql:3306/
+
+
+GIT hub configuration
+=============
+1. git config --global user.name "nathtj"
+2. git config --global user.email "nathtj@gmail.com"
+
+
+Splunk Test
+========================
+Use Super user:
+/opt/splunk/bin
+run ./Splunk start
+1. usera admin/ubuntu
+2. token: 5437b621-25ad-4cdd-bd50-5588c84cb7ff
+3. curl -k-H "Authorization: Splunk 55e18b09-6731-4544-b9f1-6e167d369083" http://127.0.0.1:8088/services/collector/event -d '{"event": "hello world"}'
+{"text": "Success", "code": 0}
