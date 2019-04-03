@@ -8,3 +8,7 @@
 5. Set the GOPATH environment variable to $HOME/go ~/.profile
 	export GOPATH=$HOME/go
 	export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+
+
+
+https://www.safaribooksonline.com/live-training/
