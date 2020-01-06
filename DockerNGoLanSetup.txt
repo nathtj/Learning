@@ -42,8 +42,13 @@ F) Install Docker
 8.  sudo apt-get install docker-ce
 9. apt-cache madison docker-ce
 10. sudo apt-get install docker-ce=<VERSION>
+
+to run docker without root or sudo command after this setup
+==============================================
 if run by local user sudo usermod -a -G docker $USER
+sudo usermod -aG docker $USER
 docker rmi --- to remvoe the tag
+
 
 G) Set Docker Proxy
 =======================================================================
@@ -55,7 +60,7 @@ G) Set Docker Proxy
 	Environment="HTTPS_PROXY=user:pwd@web-proxy.com:8080/"
 	Environment="NO_PROXY=localhost,127.0.0.1,localaddress,.localdomain.com"
 3.  Flush changes: sudo systemctl daemon-reload
-4.  Restart Docker: suod systemctl restart docker
+4.  Restart Docker: sudo systemctl restart docker
 5.  sudo docker run hello-world
 
 verify the setting:
@@ -112,6 +117,7 @@ sudo apt update; sudo apt install atom
 VB Share direcotry:
 ========================
 1. With Virtual machine running click Devices-->Inert Guest Additions CD
+1.1 issue on ubuntu 18 try this : sudo apt install virtualbox-guest-x11.
 2. From Machine --> Setting ---> Shared Folders ---> click Add
 3. Proivde C:\sharepath---> select Make permanent and Auto mount
 4. Re-start the VB machine
@@ -137,6 +143,10 @@ git config --global http.proxy http://user:pwd@proxy.com:8080
 export SYS_PROXY="http://user:pwd@proxy.com:8080"
 export HTTP_PROXY=$SYS_PROXY
 export HTTPS_PROXY=$SYS_PROXY
+GIT hub configuration
+=============
+1. git config --global user.name "nathtj"
+2. git config --global user.email "nathtj@gmail.com"
 
 
 =============
@@ -167,9 +177,12 @@ OpenShit ---
 ====================
 1. oc cluster up
 2. 
-Edit the daemon.json file, whose default location is /etc/docker/daemon.json on Linux or C:\ProgramData\docker\config\daemon.json on Windows Server. If you use Docker for Mac or Docker for Windows, click the Docker icon, choose Preferences, and choose +Daemon.
+Edit the daemon.json file, whose default location is /etc/docker/daemon.json on Linux or 
+C:\ProgramData\docker\config\daemon.json on Windows Server. 
+If you use Docker for Mac or Docker for Windows, click the Docker icon, choose Preferences, and choose +Daemon.
 
-If the daemon.json file does not exist, create it. Assuming there are no other settings in the file, it should have the following contents:
+If the daemon.json file does not exist, create it. 
+Assuming there are no other settings in the file, it should have the following contents:
 
 {
   "insecure-registries" : ["myregistrydomain.com:5000"]
@@ -179,6 +192,14 @@ If the daemon.json file does not exist, create it. Assuming there are no other s
 
 Need openshift client
 ============================
+https://computingforgeeks.com/how-to-setup-openshift-origin-on-ubuntu/
+Get from:
+https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
+tar -zvxf openshift-origin-client-tools*.tar.gz
+cd to direcotry
+copy oc
+sudo cp oc /usr/local/bin
+
 Origin config path under /var/lib/origin
 
 oc cluster up --env HTTP_PROXY=proxy.host --env HTTPS_PROXY=proxy.host --env NO_PROXY="10.128.0.0/14,172.30.0.0/16,192.168.0.0/16" this not worked with docker
@@ -203,6 +224,8 @@ oc port-forward <pod-name> <local-port>:<remote:port>
 get running port
 lsof -i 
 sudo netstat -peanut | grep ":8000 "
+
+
 ================
 go concurrency pattern by Robe Pike .... 
 
@@ -256,3 +279,41 @@ Splunk
 ================
 user nathtj/T@2014
 calling event for Splunk
+
+
+Splunk Test
+========================
+Use Super user:
+/opt/splunk/bin
+run ./Splunk start
+1. usera admin/ubuntu
+2. token: 5437b621-25ad-4cdd-bd50-5588c84cb7ff
+3. curl -k-H "Authorization: Splunk 55e18b09-6731-4544-b9f1-6e167d369083" http://127.0.0.1:8088/services/collector/event -d '{"event": "hello world"}'
+{"text": "Success", "code": 0}
+
+
+JBOSS setup 
+======================
+setup for Apache Camel for fabric deployment to openshift.
+-Dkubernetes.master=https://opn-console-mz-dev.unionbank.com:443
+-Dkubernetes.namespace=camletest
+-Dkubernetes.auth.basic.username=id
+-Dkubernetes.auth.basic.password=pwd
+-Dfabric8.mode=openshift
+-Dkubernetes.trust.certificates=true
+-Dfabric8.build.strategy=s2i
+-Dkubernetes.auth.tryServiceAccount=false
+-Dfabric8.generator.from=registry.access.redhat.com/jboss-fuse-6/fis-java-openshift
+-Dfabric8.generator.fromMode=docker
+-Dkubernetes.auth.tryKubeConfig=false
+
+EAP 7 from docker hub
+=========================
+https://hub.docker.com/r/tutum/jboss
+If you want to use a preset password instead of a random generated one, 
+you can set the environment variable JBOSS_PASS to your specific password 
+when running the container:
+
+docker run -d -p 8080:8080 -p 9990:9990 -e JBOSS_PASS="mypass" tutum/jboss
+
+
